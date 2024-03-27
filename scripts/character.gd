@@ -93,6 +93,7 @@ func process_handler():
 			animation_node.play(dir)
 			if tile_type == 1: # 地图障碍
 				animation_node.stop()
+				return
 			elif tile_type == 2: # 敌人
 				var monster_id = tile_data.get_custom_data("monster_id")
 				var fight_result = Battle.fight(monster_id)
