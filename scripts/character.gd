@@ -21,18 +21,27 @@ var is_first_animation := true # 用于开始移动时 seek 动画
 var player_node: Node2D
 var animation_node: AnimationPlayer
 var map_node: TileMap
-
+var hp_node: Label
+var atk_node: Label
+var def_node: Label
 
 # World
 #   - Player
 #     - AnimationPlayer
 #   - TileMap
+#   - HUD
+#     - LevelValue
+#     - HPValue
+#     - AttackValue
+#     - DefenseValue
+
 func init_nodes():
 	player_node = get_node("/root/World/Player")
 	animation_node = get_node("/root/World/Player/AnimationPlayer")
 	map_node = get_node("/root/World/TileMap")
-	# erase_cell(layer: int, coords: Vector2i) 
-	# map_node.erase_cell()
+	hp_node = get_node("/root/World/HUD/HPValue")
+	atk_node = get_node("/root/World/HUD/AttackValue")
+	def_node = get_node("/root/World/HUD/DefenseValue")
 	
 func init_pos(pos: Vector2):
 	position = pos
@@ -75,22 +84,33 @@ func process_handler():
 			is_first_animation = true
 			animation_node.stop()
 		else:
+			# 下一位置的图块数据
 			var next_position = position + velocity
 			var tile_data = map_node.get_cell_tile_data(1, next_position)
-			var tile_type := 0
-			if tile_data:
-				tile_type = tile_data.get_custom_data("type")
+			var tile_type = tile_data.get_custom_data("type") if tile_data else 0
 			
 			# 根据所按的方向播放动画
 			animation_node.play(dir)
 			if tile_type == 1: # 地图障碍
 				animation_node.stop()
-			else:
-				is_moving = true
-				if is_first_animation:
-					is_first_animation = false
-					animation_node.seek(0.2)
-				if tile_type == 2: # 敌人
-					var id = tile_data.get_custom_data("monster_id")
-					Battle.get_demage(id)
-					map_node.erase_cell(1, next_position)
+			elif tile_type == 2: # 敌人
+				var monster_id = tile_data.get_custom_data("monster_id")
+				var fight_result = Battle.fight(monster_id)
+				# 打不过
+				if not fight_result:
+					animation_node.stop()
+					return
+				# 更新左侧面板
+				update_hud()
+				# 消除敌人图块
+				map_node.erase_cell(1, next_position)
+
+			is_moving = true
+			if is_first_animation:
+				is_first_animation = false
+				animation_node.seek(0.2)
+
+func update_hud():
+	hp_node.text = String.num_int64(hp)
+	atk_node.text = String.num_int64(atk)
+	def_node.text = String.num_int64(def)
