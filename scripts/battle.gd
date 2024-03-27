@@ -5,8 +5,8 @@ const monster_data = {
 		"id": "1",
 		"name": "兽人",
 		"hp": 50,
-		"atk": 15,
-		"def": 0
+		"atk": 12,
+		"def": 5
 	}
 }
 
@@ -16,9 +16,11 @@ func get_damage(monster_id: String):
 	if Character.atk <= monster.def:
 		return null
 
-	var rounds = ceili(float(monster.hp) / Character.atk)
+	# 回合数
+	var rounds = ceili(float(monster.hp) / (Character.atk - monster.def))
+	# 每回合被造成的伤害
 	var damage_per_round = max(monster.atk - Character.def, 0)
-	return rounds * damage_per_round
+	return (rounds - 1) * damage_per_round
 
 func fight(monster_id: String) -> bool:
 	var damage = get_damage(monster_id)
