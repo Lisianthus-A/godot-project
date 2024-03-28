@@ -20,7 +20,6 @@ var is_first_animation := true # 用于开始移动时 seek 动画
 # node 
 var player_node: Node2D
 var animation_node: AnimationPlayer
-var map_node: TileMap
 var hp_node: Label
 var atk_node: Label
 var def_node: Label
@@ -38,7 +37,6 @@ var def_node: Label
 func init_nodes():
 	player_node = get_node("/root/World/Player")
 	animation_node = get_node("/root/World/Player/AnimationPlayer")
-	map_node = get_node("/root/World/TileMap")
 	hp_node = get_node("/root/World/HUD/HPValue")
 	atk_node = get_node("/root/World/HUD/AttackValue")
 	def_node = get_node("/root/World/HUD/DefenseValue")
@@ -78,6 +76,7 @@ func process_handler():
 			current_frame = 0
 			position += velocity
 			print("pos:", position)
+			#print("pos2:", player_node.position)
 	else:
 		get_direction()
 		if dir == "":
@@ -86,25 +85,23 @@ func process_handler():
 		else:
 			# 下一位置的图块数据
 			var next_position = position + velocity
-			var tile_data = map_node.get_cell_tile_data(1, next_position)
-			var tile_type = tile_data.get_custom_data("type") if tile_data else 0
+			var map_data = Map.get_data(next_position)
 			
 			# 根据所按的方向播放动画
 			animation_node.play(dir)
-			if tile_type == 1: # 地图障碍
+			if map_data.type == "1": # 地图障碍
 				animation_node.stop()
 				return
-			elif tile_type == 2: # 敌人
-				var monster_id = tile_data.get_custom_data("monster_id")
-				var fight_result = Battle.fight(monster_id)
+			elif map_data.type == "2": # 敌人
+				var is_win = Battle.fight(map_data.monster_id)
 				# 打不过
-				if not fight_result:
+				if not is_win:
 					animation_node.stop()
 					return
 				# 更新左侧面板
 				update_hud()
 				# 消除敌人图块
-				map_node.erase_cell(1, next_position)
+				Map.erase(next_position)
 
 			is_moving = true
 			if is_first_animation:

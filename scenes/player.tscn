@@ -1,6 +1,5 @@
-[gd_scene load_steps=9 format=3 uid="uid://f0rx7pn7j3er"]
+[gd_scene load_steps=8 format=3 uid="uid://f0rx7pn7j3er"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_6f5po"]
 [ext_resource type="Texture2D" uid="uid://bdpuw834bdfw8" path="res://assets/character-128x192.png" id="1_lo027"]
 
 [sub_resource type="Animation" id="Animation_ouv1w"]
@@ -93,7 +92,6 @@ _data = {
 
 [node name="Player" type="Node2D"]
 position = Vector2(16, 16)
-script = ExtResource("1_6f5po")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_lo027")

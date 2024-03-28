@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 
 Character="*res://scripts/character.gd"
 Battle="*res://scripts/battle.gd"
+Map="*res://scripts/map.gd"
 
 [display]
 
