@@ -6,7 +6,9 @@ const monster_data = {
 		"name": "兽人",
 		"hp": 50,
 		"atk": 12,
-		"def": 5
+		"def": 5,
+		"money": 10,
+		"exp": 15
 	}
 }
 
@@ -34,7 +36,7 @@ func get_damage(monster_id: String):
 
 func fight(monster_id: String) -> bool:
 	var damage = get_damage(monster_id)
-	print("damage:", damage)
+	#print("damage:", damage)
 	if damage == null:
 		return false
 

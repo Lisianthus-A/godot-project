@@ -5,7 +5,7 @@ var map_node: TileMap
 var map_cell_to_label := {}
 
 func init_nodes():
-	map_node = get_node("/root/World/TileMap")	
+	map_node = get_node("/root/World/TileMap")
 	update_monster_damage()
 
 # 获取地图上图块数据
@@ -33,7 +33,7 @@ func update_monster_damage():
 	var cells = map_node.get_used_cells(1)
 	for cell in cells:
 		var data = get_data(cell)
-		if data.type == "2":
+		if data.monster_id != "0":
 			var damage = Battle.get_damage(data.monster_id)
 			var cell_key = "%s_%s" % [cell.x, cell.y]
 			if not map_cell_to_label.has(cell_key):

@@ -4,6 +4,7 @@ func _ready():
 	Character.init_nodes()
 	Character.init_pos(Vector2(1, 1))
 	Map.init_nodes()
+	Manual.init_nodes()
 	# 读取
 	#FileAccess.file_exists("./test.bi")
 	#var bi = FileAccess.get_file_as_bytes("./test.bi")
