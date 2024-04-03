@@ -9,20 +9,20 @@ var def := 10
 var position := Vector2(0, 0)
 
 # 移动相关
-const MOVE_FRAME = 8 # 每次移动花费多少帧
-const PIXEL_PER_FRAME = 32.0 / MOVE_FRAME # 每一帧移动多少像素
-var current_frame := 0 # 当前移动花费了多少帧
-var dir := "" # 移动方向
-var velocity := Vector2.ZERO # 移动向量
-var is_moving := false # 是否正在移动
-var is_first_animation := true # 用于开始移动时 seek 动画
+const _MOVE_FRAME = 8 # 每次移动花费多少帧
+const _PIXEL_PER_FRAME = 32.0 / _MOVE_FRAME # 每一帧移动多少像素
+var _current_frame := 0 # 当前移动花费了多少帧
+var _dir := "" # 移动方向
+var _velocity := Vector2.ZERO # 移动向量
+var _is_moving := false # 是否正在移动
+var _is_first_animation := true # 用于开始移动时 seek 动画
 
 # node 
-var player_node: Node2D
-var animation_node: AnimationPlayer
-var hp_node: Label
-var atk_node: Label
-var def_node: Label
+var _player_node: Node2D
+var _animation_node: AnimationPlayer
+var _hp_node: Label
+var _atk_node: Label
+var _def_node: Label
 
 # World
 #   - Player
@@ -35,15 +35,15 @@ var def_node: Label
 #     - DefenseValue
 
 func init_nodes():
-	player_node = get_node("/root/World/Player")
-	animation_node = get_node("/root/World/Player/AnimationPlayer")
-	hp_node = get_node("/root/World/HUD/HPValue")
-	atk_node = get_node("/root/World/HUD/AttackValue")
-	def_node = get_node("/root/World/HUD/DefenseValue")
+	_player_node = get_node("/root/World/Player")
+	_animation_node = get_node("/root/World/Player/AnimationPlayer")
+	_hp_node = get_node("/root/World/HUD/HPValue")
+	_atk_node = get_node("/root/World/HUD/AttackValue")
+	_def_node = get_node("/root/World/HUD/DefenseValue")
 	
 func init_pos(pos: Vector2):
 	position = pos
-	player_node.position = compute_position(pos)
+	_player_node.position = compute_position(pos)
 	
 func compute_position(pos: Vector2):
 	return pos * 32 + Vector2(176, 16)
@@ -51,64 +51,64 @@ func compute_position(pos: Vector2):
 # 根据当前按下的方向键进行设置
 func get_direction():
 	if Input.is_action_pressed("ui_left"):
-		dir = "left"
-		velocity = Vector2.LEFT
+		_dir = "left"
+		_velocity = Vector2.LEFT
 	elif Input.is_action_pressed("ui_right"):
-		dir = "right"
-		velocity = Vector2.RIGHT
+		_dir = "right"
+		_velocity = Vector2.RIGHT
 	elif Input.is_action_pressed("ui_up"):
-		dir = "up"
-		velocity = Vector2.UP
+		_dir = "up"
+		_velocity = Vector2.UP
 	elif Input.is_action_pressed("ui_down"):
-		dir = "down"
-		velocity = Vector2.DOWN
+		_dir = "down"
+		_velocity = Vector2.DOWN
 	else:
-		dir = ""
-		velocity = Vector2.ZERO
+		_dir = ""
+		_velocity = Vector2.ZERO
 
 func process_handler():
-	if is_moving:
+	if _is_moving:
 		# 开始移动角色
-		current_frame += 1
-		player_node.position = compute_position(position) + velocity * PIXEL_PER_FRAME * current_frame
-		if current_frame >= MOVE_FRAME:
-			is_moving = false
-			current_frame = 0
-			position += velocity
+		_current_frame += 1
+		_player_node.position = compute_position(position) + _velocity * _PIXEL_PER_FRAME * _current_frame
+		if _current_frame >= _MOVE_FRAME:
+			_is_moving = false
+			_current_frame = 0
+			position += _velocity
 			print("pos:", position)
-			#print("pos2:", player_node.position)
+			#print("pos2:", _player_node.position)
 	else:
 		get_direction()
-		if dir == "":
-			is_first_animation = true
-			animation_node.stop()
+		if _dir == "":
+			_is_first_animation = true
+			_animation_node.stop()
 		else:
 			# 下一位置的图块数据
-			var next_position = position + velocity
+			var next_position = position + _velocity
 			var map_data = Map.get_data(next_position)
 			
 			# 根据所按的方向播放动画
-			animation_node.play(dir)
+			_animation_node.play(_dir)
 			if map_data.type == "1": # 地图障碍
-				animation_node.stop()
+				_animation_node.stop()
 				return
 			elif map_data.type == "2": # 敌人
 				var is_win = Battle.fight(map_data.monster_id)
 				# 打不过
 				if not is_win:
-					animation_node.stop()
+					_animation_node.stop()
 					return
 				# 更新左侧面板
 				update_hud()
 				# 消除敌人图块
 				Map.erase(next_position)
 
-			is_moving = true
-			if is_first_animation:
-				is_first_animation = false
-				animation_node.seek(0.2)
+			_is_moving = true
+			if _is_first_animation:
+				_is_first_animation = false
+				_animation_node.seek(0.2)
 
 func update_hud():
-	hp_node.text = String.num_int64(hp)
-	atk_node.text = String.num_int64(atk)
-	def_node.text = String.num_int64(def)
+	_hp_node.text = String.num_int64(hp)
+	_atk_node.text = String.num_int64(atk)
+	_def_node.text = String.num_int64(def)
