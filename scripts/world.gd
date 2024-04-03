@@ -22,4 +22,8 @@ func _ready():
 	
 
 func _process(_delta):
+	Manual.process_handler()
+	if Manual.is_show:
+		return
+
 	Character.process_handler()
