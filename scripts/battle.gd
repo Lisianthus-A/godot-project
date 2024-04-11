@@ -9,6 +9,15 @@ const monster_data = {
 		"def": 5,
 		"money": 10,
 		"exp": 15
+	},
+	"2": {
+		"id": "2",
+		"name": "绿兽人",
+		"hp": 100,
+		"atk": 20,
+		"def": 10,
+		"money": 20,
+		"exp": 20
 	}
 }
 
@@ -17,7 +26,6 @@ var map_id_to_damage := {}
 
 func get_damage(monster_id: String):
 	if map_id_to_damage.has(monster_id):
-		#print("hit cache")
 		return map_id_to_damage[monster_id]
 	
 	var monster = monster_data[monster_id]

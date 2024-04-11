@@ -82,8 +82,9 @@ func draw():
 
 	for cell in used_cells:
 		var data = Map.get_data(cell)
-		if data.monster_id != "0" and not drawn.has(data.monster_id):
-			drawn[data.monster_id] = 1
+		# 还未绘制到手册上的敌人
+		if data.type == "2" and not drawn.has(data.target_id):
+			drawn[data.target_id] = 1
 			# Todo: 分页
 			# 图集坐标
 			var coords = _world_map_node.get_cell_atlas_coords(1, cell)
@@ -91,7 +92,7 @@ func draw():
 			var source_id = _world_map_node.get_cell_source_id(1, cell)
 			_manual_map_node.set_cell(1, _grids[idx], source_id, coords)
 			
-			var monster = Battle.monster_data[data.monster_id]
+			var monster = Battle.monster_data[data.target_id]
 			# 怪名
 			var label_name = create_label(0, idx)
 			label_name.text = monster.name
@@ -119,9 +120,10 @@ func draw():
 			# 伤害
 			var label_damage = create_label(4, idx)
 			label_damage.text = "伤害"
-			# 防御 - 数值
+			# 伤害 - 数值
 			var label_damage_value = create_label(4, idx, true)
-			label_damage_value.text = String.num_int64(Battle.get_damage(data.monster_id))
+			var damage = Battle.get_damage(data.target_id)
+			label_damage_value.text = String.num_int64(damage) if damage != null else "???"
 			
 			_manual_map_node.add_child(label_name)
 			_manual_map_node.add_child(label_skill)

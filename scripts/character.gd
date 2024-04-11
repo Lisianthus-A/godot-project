@@ -5,6 +5,9 @@ var hp := 100
 var atk := 10
 var def := 10
 
+# 拥有的物品 { [id]: { id: string; count: int; } }
+var items := {}
+
 # 起始点 (16, 16) 每格像素 32x32
 var position := Vector2(0, 0)
 
@@ -93,7 +96,7 @@ func process_handler():
 				_animation_node.stop()
 				return
 			elif map_data.type == "2": # 敌人
-				var is_win = Battle.fight(map_data.monster_id)
+				var is_win = Battle.fight(map_data.target_id)
 				# 打不过
 				if not is_win:
 					_animation_node.stop()
@@ -101,6 +104,9 @@ func process_handler():
 				# 更新左侧面板
 				update_hud()
 				# 消除敌人图块
+				Map.erase(next_position)
+			elif map_data.type == "3": # 物品
+				Item.obtain(map_data.target_id)
 				Map.erase(next_position)
 
 			_is_moving = true

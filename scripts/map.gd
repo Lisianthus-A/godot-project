@@ -12,11 +12,11 @@ func init_nodes():
 func get_data(pos: Vector2) -> Dictionary:
 	var cell_data = map_node.get_cell_tile_data(1, pos)
 	var type = cell_data.get_custom_data("type") if cell_data else "0"
-	var monster_id = cell_data.get_custom_data("monster_id") if type == "2" else "0"
+	var target_id = cell_data.get_custom_data("target_id") if cell_data else "0"
 	
 	return {
 		"type": type,
-		"monster_id": monster_id,
+		"target_id": target_id,
 	}
 
 # 消除地图上的图块
@@ -33,8 +33,8 @@ func update_monster_damage():
 	var cells = map_node.get_used_cells(1)
 	for cell in cells:
 		var data = get_data(cell)
-		if data.monster_id != "0":
-			var damage = Battle.get_damage(data.monster_id)
+		if data.type == "2":
+			var damage = Battle.get_damage(data.target_id)
 			var cell_key = "%s_%s" % [cell.x, cell.y]
 			if not map_cell_to_label.has(cell_key):
 				var node = Label.new()
