@@ -27,15 +27,15 @@ var _hp_node: Label
 var _atk_node: Label
 var _def_node: Label
 
-# World
-#   - Player
+# - Player
 #     - AnimationPlayer
+# HUD
+# - LevelValue
+# - HPValue
+# - AttackValue
+# - DefenseValue
+# FloorN
 #   - TileMap
-#   - HUD
-#     - LevelValue
-#     - HPValue
-#     - AttackValue
-#     - DefenseValue
 
 func init_nodes():
 	_player_node = get_node("/root/World/Player")
@@ -118,3 +118,4 @@ func update_hud():
 	_hp_node.text = String.num_int64(hp)
 	_atk_node.text = String.num_int64(atk)
 	_def_node.text = String.num_int64(def)
+ 

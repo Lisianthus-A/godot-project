@@ -21,7 +21,7 @@ const monster_data = {
 	}
 }
 
-# 用于缓存相同怪物的伤害 Todo: 清理缓存逻辑
+# 用于缓存相同怪物的伤害
 var map_id_to_damage := {}
 
 func get_damage(monster_id: String):

@@ -16,9 +16,9 @@ var _manual_map_node: TileMap
 var _is_lock := false
 var is_show := false
 
-func init_nodes():
+func init_nodes(node: TileMap):
 	_manual_node.visible = false
-	_world_map_node = get_node("/root/World/TileMap")
+	_world_map_node = node
 	
 	# 怪物手册黑色背景
 	var color_rect = ColorRect.new()
@@ -33,8 +33,8 @@ func init_nodes():
 	clear_map()
 	_manual_node.add_child(_manual_map_node)
 	
-	var world_node = get_node("/root/World")
-	world_node.add_child(_manual_node)
+	var world_node: Node = get_node("/root/World")
+	world_node.add_child.call_deferred(_manual_node)
 
 func process_handler():
 	if _is_lock:

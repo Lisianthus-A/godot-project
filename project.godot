@@ -21,6 +21,7 @@ Battle="*res://scripts/battle.gd"
 Map="*res://scripts/map.gd"
 Manual="*res://scripts/manual.gd"
 Item="*res://scripts/item.gd"
+System="*res://scripts/system.gd"
 
 [display]
 
