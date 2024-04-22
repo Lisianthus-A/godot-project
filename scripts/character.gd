@@ -19,6 +19,7 @@ var _dir := "" # 移动方向
 var _velocity := Vector2.ZERO # 移动向量
 var _is_moving := false # 是否正在移动
 var _is_first_animation := true # 用于开始移动时 seek 动画
+var _change_floor_type := ""
 
 # node 
 var _player_node: Node2D
@@ -78,7 +79,10 @@ func process_handler():
 			_is_moving = false
 			_current_frame = 0
 			position += _velocity
-			print("pos:", position)
+			if _change_floor_type != "":
+				System.change_floor(_change_floor_type)
+				_change_floor_type = ""
+			#print("pos:", position)
 			#print("pos2:", _player_node.position)
 	else:
 		get_direction()
@@ -108,6 +112,10 @@ func process_handler():
 			elif map_data.type == "3": # 物品
 				Item.obtain(map_data.target_id)
 				Map.erase(next_position)
+			elif map_data.type == "4": # 上楼
+				_change_floor_type = "next"
+			elif map_data.type == "5": # 下楼
+				_change_floor_type = "prev"
 
 			_is_moving = true
 			if _is_first_animation:

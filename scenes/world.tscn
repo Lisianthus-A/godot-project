@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://b7pwcilf42ytf"]
 
 [ext_resource type="PackedScene" uid="uid://f0rx7pn7j3er" path="res://scenes/player.tscn" id="1_7kg02"]
-[ext_resource type="PackedScene" uid="uid://o5615joeuw5m" path="res://scenes/floors/f1.tscn" id="3_2cj1y"]
+[ext_resource type="PackedScene" uid="uid://dm6c6qr7e6h11" path="res://scenes/floors/f1.tscn" id="3_2cj1y"]
+[ext_resource type="PackedScene" uid="uid://dgfe2bilhgkhl" path="res://scenes/manual.tscn" id="3_wkjvq"]
 [ext_resource type="PackedScene" uid="uid://wtbopriy3665" path="res://scenes/HUD.tscn" id="4_hq371"]
-[ext_resource type="PackedScene" uid="uid://t7m2t14t81xw" path="res://scenes/transition.tscn" id="4_rx0wo"]
 
 [node name="World" type="Node"]
 
@@ -12,6 +12,7 @@
 [node name="Player" parent="." instance=ExtResource("1_7kg02")]
 z_index = 1
 
-[node name="Transition" parent="." instance=ExtResource("4_rx0wo")]
+[node name="Manual" parent="." instance=ExtResource("3_wkjvq")]
+visible = false
 
 [node name="F1" parent="." instance=ExtResource("3_2cj1y")]

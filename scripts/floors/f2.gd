@@ -7,8 +7,8 @@ func _ready():
 	self.name = "CurrentFloor"
 	System.init()
 	Character.init_pos(pos_prev_floor)
-	System.prev_floor = ""
-	System.next_floor = "res://scenes/floors/f2.tscn"
+	System.prev_floor = "res://scenes/floors/f1.tscn"
+	System.next_floor = ""
 
 func _process(_delta):
 	System.process_handler()

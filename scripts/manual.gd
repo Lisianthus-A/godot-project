@@ -10,31 +10,17 @@ const _grids := [
 	Vector2i(1, 16)
 ]
 
-var _manual_node: CanvasLayer = CanvasLayer.new()
+var _manual_node: CanvasLayer
 var _world_map_node: TileMap
 var _manual_map_node: TileMap
 var _is_lock := false
 var is_show := false
 
-func init_nodes(node: TileMap):
-	_manual_node.visible = false
-	_world_map_node = node
-	
-	# 怪物手册黑色背景
-	var color_rect = ColorRect.new()
-	color_rect.position = Vector2(160, 0)
-	color_rect.size = Vector2(640, 640)
-	color_rect.color = Color.html("#111")
-	_manual_node.add_child(color_rect)
-	
-	# 用来复用怪物图块
-	_manual_map_node = _world_map_node.duplicate()
-	_manual_map_node.clear_layer(0)
+func init_nodes():
+	_manual_node = get_node("/root/World/Manual")
+	_manual_map_node = _manual_node.get_node("Map")
+	_world_map_node = get_node("/root/World/CurrentFloor/Map")
 	clear_map()
-	_manual_node.add_child(_manual_map_node)
-	
-	var world_node: Node = get_node("/root/World")
-	world_node.add_child.call_deferred(_manual_node)
 
 func process_handler():
 	if _is_lock:

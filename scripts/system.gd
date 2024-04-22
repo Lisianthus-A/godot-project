@@ -1,12 +1,12 @@
 extends Node
 
-var transition_node: AnimationPlayer
+var prev_floor := ""
+var next_floor := ""
 
-func init(map_node: TileMap):
-	transition_node = get_node("/root/World/Transition/AnimationPlayer")
+func init():
 	Character.init_nodes()
-	Map.init_nodes(map_node)
-	Manual.init_nodes(map_node)
+	Map.init_nodes()
+	Manual.init_nodes()
 
 func process_handler():
 	Manual.process_handler()
@@ -15,10 +15,13 @@ func process_handler():
 
 	Character.process_handler()
 
-func change_floor():
-	transition_node.queue("fade_in")
-	#Todo: change fllor start
-	transition_node.queue("fade_out")
+func change_floor(type: String):
+	var world_node = get_node("/root/World")
+	var cur_floor = get_node("/root/World/CurrentFloor")
+	world_node.remove_child(cur_floor)
+	cur_floor.queue_free()
+	var new_floor = load(next_floor if type == "next" else prev_floor).instantiate()
+	world_node.add_child(new_floor)
 
 func save_game():
 	# 保存

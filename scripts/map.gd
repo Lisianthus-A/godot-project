@@ -4,8 +4,9 @@ var map_node: TileMap
 # { cell: LabelNode }
 var map_cell_to_label := {}
 
-func init_nodes(node: TileMap):
-	map_node = node
+func init_nodes():
+	map_node = get_node("/root/World/CurrentFloor/Map")
+	map_cell_to_label = {}
 	update_monster_damage()
 
 # 获取地图上图块数据
